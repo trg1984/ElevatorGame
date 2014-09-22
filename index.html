@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<link href="Elevator.css" type="text/css" rel="stylesheet" />
+		<link href="Floor.css" type="text/css" rel="stylesheet" />
+		<script src="jquery-1.11.1.js"></script>
+		<script src="Elevator.js"></script>
+		<script src="Floor.js"></script>
+		<script>
+			function init() {
+				floor1 = new Floor($('#floor1'), {name: '3'});
+				floor2 = new Floor($('#floor2'), {name: '2'});
+				floor3 = new Floor($('#floor3'), {name: '1'});
+				elevator = new Elevator($('#elevator'), {floors: [floor1, floor2, floor3]});
+			}
+		
+			$(document).ready(
+				function(e) {
+				
+					init();
+				
+					$('input[type="button"]').click(
+						function(ev) {
+							switch(ev.target.value) {
+								case 'init':
+									init();
+									break;
+								case 'move up':
+									elevator.moveUp();
+									break;
+								case 'move down':
+									elevator.moveDown();
+									break;
+								case 'toggle doors':
+									elevator.toggleDoors();
+									break;
+								case 'toggle timelapse':
+									elevator.toggleTimeLapse();
+									break;
+								default:
+									break;
+							}
+						}
+					)
+				} 
+			);
+		</script>
+		<style>
+			html, body {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				background-image: url(gfx/bgimg.jpg);
+				background-size: cover;
+			}
+			
+			.lightBorders {
+				border: 1px solid silver;
+			}
+			
+			input.button {
+				display: inline-block;
+				margin: 4px;
+				float: left;
+				clear: left;
+				width: 20em;
+				height: 32px;
+				z-index: 1;
+				position: absolute;
+				left: 360px;
+			}
+
+			#game {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<input type="button" style="top:0px;" class="button" value="init"/><br/>
+		<input type="button" style="top:36px;" class="button" value="move up"/><br/>
+		<input type="button" style="top:72px;" class="button" value="move down"/><br/>
+		<input type="button" style="top:108px;" class="button" value="toggle doors"/><br/>
+		<input type="button" style="top:144px;" class="button" value="toggle timelapse"/><br/>
+		<div id="game">
+			<div id="elevator"></div>
+			<div id="floor1"></div>
+			<div id="floor2"></div>
+			<div id="floor3"></div>
+		</div>
+	</body>
+</html>

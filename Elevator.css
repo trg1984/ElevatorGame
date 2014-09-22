@@ -1,0 +1,81 @@
+.elevator {
+	width: 80px;
+	height: 120px;
+	position: relative;
+	left: 140px;
+	-webkit-transition: top 5s;
+	-moz-transition: top 5s;
+	-ms-transition: top 5s;
+	-o-transition: top 5s;
+    transition: top 5s;
+}
+
+.timeLapse {
+	-webkit-transition: all 0.1s !important;
+	-moz-transition: all 0.1s !important;
+	-ms-transition: all 0.1s !important;
+	-o-transition: all 0.1s !important;
+    transition: all 0.1s !important;
+}
+
+.elevator .part {
+	width: 100%;
+	height: 100%;
+	position:absolute;
+	top:0;
+	left: 0;
+}
+
+.elevator .box {
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorBox.png');
+}
+
+.elevator .frame {
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorFrame.png');
+}
+
+.elevator .leftDoor {
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorLeftDoor.png');
+	
+	-webkit-transition: background-position 1s;
+	-moz-transition: background-position 1s;
+	-ms-transition: background-position 1s;
+	-o-transition: background-position 1s;
+    transition: background-position 1s;
+}
+
+.elevator .rightDoor {
+	background-repeat: no-repeat;
+	background-position: 0 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorRightDoor.png');
+	
+	-webkit-transition: background-position 1s;
+	-moz-transition: background-position 1s;
+	-ms-transition: background-position 1s;
+	-o-transition: background-position 1s;
+    transition: background-position 1s;
+}
+
+.elevator .leftDoor.open {
+	background-repeat: no-repeat;
+	background-position: -40px 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorLeftDoor.png');
+}
+
+.elevator .rightDoor.open {
+	background-repeat: no-repeat;
+	background-position: 40px 0;
+	background-attachment: scroll;
+	background-image: url('gfx/elevatorRightDoor.png');
+}
