@@ -24,6 +24,7 @@ TODO
 	- [x] Elevator moves as intended.
 - [ ] Disallow / punish for certain cases
 	- [x] The elevator should not move to a direction without a floor.
+	- [x] The elevator should not move if the doors are open.
 	- [ ] Doors should not open while the elevator is moving.
 - [ ] Floors and floor graphics.
 	- [x] Floor initialization (placement, graphics, height..).
