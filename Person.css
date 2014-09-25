@@ -1,0 +1,26 @@
+.person{
+	position:absolute;
+	background-image: url('gfx/Person.png');
+}
+
+.walkAnimation{
+	animation: walk .8s steps(3) infinite;
+}
+
+.turnAnimation{
+	animation: turn .5s steps(4) alternate infinite;
+}
+
+.movePerson1{
+	transition: all 10s;
+}
+
+@keyframes walk {
+	0%		{ background-position: 0px 0px;}
+	100%	{ background-position: -120px 0px; }
+}
+
+@keyframes turn{
+	0%		{ background-position: 0px -110px; }
+	100%	{ background-position: -160px -110px; }
+}
