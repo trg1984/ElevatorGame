@@ -2,15 +2,18 @@
 	<head>
 		<link href="Elevator.css" type="text/css" rel="stylesheet" />
 		<link href="Floor.css" type="text/css" rel="stylesheet" />
+		<link href="Person.css" type="text/css" rel="stylesheet" />
 		<script src="jquery-1.11.1.js"></script>
 		<script src="Elevator.js"></script>
 		<script src="Floor.js"></script>
+		<script src="Person.js"></script>
 		<script>
 			function init() {
 				floor1 = new Floor($('#floor1'), {name: '3'});
 				floor2 = new Floor($('#floor2'), {name: '2'});
 				floor3 = new Floor($('#floor3'), {name: '1'});
 				elevator = new Elevator($('#elevator'), {floors: [floor1, floor2, floor3]});
+				person = new Person($('#Person1'), {name: 'Jack'});
 			}
 		
 			$(document).ready(
@@ -41,6 +44,8 @@
 							}
 						}
 					)
+					
+					
 				} 
 			);
 		</script>
@@ -89,6 +94,7 @@
 			<div id="floor1"></div>
 			<div id="floor2"></div>
 			<div id="floor3"></div>
+			<div id="Person1"></div>
 		</div>
 	</body>
 </html>

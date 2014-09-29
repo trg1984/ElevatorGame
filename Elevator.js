@@ -8,6 +8,11 @@ function Elevator(place, config) {
 	};
 	
 	this.initialize(place, config);
+	
+	var transitionEndEventName = "transitionend";
+	$("#elevator")[0].addEventListener(transitionEndEventName, function(){
+		console.log("transition ended");
+	},false);
 }
 
 Elevator.prototype.insertFloor = function(floor, index) {

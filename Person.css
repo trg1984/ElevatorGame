@@ -11,7 +11,7 @@
 	animation: turn .5s steps(4) alternate infinite;
 }
 
-.movePerson1{
+.movePerson{
 	transition: all 10s;
 }
 
