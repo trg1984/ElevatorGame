@@ -48,6 +48,7 @@ Elevator.prototype.initialize = function(place, config) {
 		this.currentFloor =  this.config.floors[this.config.floorIndex];
 		this.config.currentPos = this.currentFloor.config.elevatorPos;
 		this.place.css('top', this.config.currentPos);
+		this.place.css('left', '140px');
 		
 	}
 	

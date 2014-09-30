@@ -1,17 +1,22 @@
 function Person(place, config) {
 
-	this.config = {
+	/*this.config = {
 		name: 'Untitled', // Name of the person.
 		picUrl: 'gfx/Person.png', // Persons's graphic.
-		height: 110 // Height of the person in pixels.		
-	};
+		height: 110, // Height of the person in pixels.
+		targetElevator: null,
+		startingFloor: 0,
+		targetFloor: 0
+	};*/
+	this.config = config;
 	
 	this.initialize(place, config);
 	
-	document.addEventListener("click", function(e){
-		document.getElementById('Person1').style.top=e.clientY+'px';
-		document.getElementById('Person1').style.left=e.clientX+'px';
-	});
+	this.moveToElevator = function(){
+		place[0].style.left = config.targetElevator.place[0].style.left;
+	}
+	
+	window.setTimeout(this.moveToElevator,1000);
 }
 
 Person.prototype.initialize = function(place, config) {
@@ -20,6 +25,6 @@ Person.prototype.initialize = function(place, config) {
 		.empty()
 		.addClass('person')
 		.append(
-			'<div class="scene part person" style="background-image: url(' + this.config.picUrl + '); width: 40px; height: ' + this.config.height + 'px; top:0px;"></div>'
+			'<div class="scene part person walkAnimation" style="background-image: url(' + this.config.picUrl + '); width: 40px; height: ' + this.config.height + 'px;"></div>'
 		);
 }

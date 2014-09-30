@@ -11,8 +11,8 @@
 	animation: turn .5s steps(4) alternate infinite;
 }
 
-.movePerson{
-	transition: all 10s;
+.moveTransition{
+	transition: all linear 10s;
 }
 
 @keyframes walk {

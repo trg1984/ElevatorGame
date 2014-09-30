@@ -4,8 +4,10 @@ function Floor(place, config) {
 		name: 'Untitled', // Name of the floor.
 		picUrl: 'gfx/floor1.png', // Floor's graphic.
 		height: 180, // Height of the floor in pixels.
+		width: 360, //width in pixels
 		elevatorPos: 40,
-		currentPos: 0 // Position of the floor vertically.
+		currentPos: 0, // Position of the floor vertically.
+		walkableHeight: 65
 	};
 	
 	this.initialize(place, config);
