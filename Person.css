@@ -8,11 +8,15 @@
 }
 
 .turnAnimation{
-	animation: turn .5s steps(4) alternate infinite;
+	animation: turn .5s steps(4) alternate 1;
+}
+
+.waitForElevator{
+	background-position: 80px -110px;
 }
 
 .moveTransition{
-	transition: all linear 10s;
+	transition: left linear 5s;
 }
 
 @keyframes walk {

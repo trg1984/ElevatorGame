@@ -12,8 +12,31 @@ function Person(place, config) {
 	
 	this.initialize(place, config);
 	
+	//there is probably a better way to do this with less repetition
+	this.transitionEndEventName = "transitionend";
+	this.animationEndEventName = "animationend";
+	this.transitionEndEvent = function(){
+		console.log("transition ended for person");
+		var person = $(place[0]).find('.person')[0];
+		person.className=person.className.replace("walkAnimation","turnAnimation");
+		place[0].removeEventListener(this.transitionEndEventName, this.transitionEndEvent);
+	}
+	this.animationEndEvent = function(){
+		console.log("animation ended for person");
+		var person = $(place[0]).find('.person')[0];
+		person.className=person.className.replace("turnAnimation","waitForElevator");
+		person.removeEventListener(this.animationEndEventName, this.animationEndEvent);
+	}
+	
+	place[0].addEventListener(this.transitionEndEventName, this.transitionEndEvent, false);
+	place[0].addEventListener(this.animationEndEventName, this.animationEndEvent, false);
+	
 	this.moveToElevator = function(){
-		place[0].style.left = config.targetElevator.place[0].style.left;
+		if(place[0].style.left < config.targetElevator.place[0].style.left)
+			place[0].style.transform="scaleX(-1)";
+		else
+			place[0].style.transform="scaleX(1)";
+		place[0].style.left = (config.targetElevator.config.center+(Math.random()*40)-20)+'px';
 	}
 	
 	window.setTimeout(this.moveToElevator,1000);

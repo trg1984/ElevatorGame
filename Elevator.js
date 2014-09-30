@@ -4,7 +4,8 @@ function Elevator(place, config) {
 		floors: [],
 		floorIndex: -1,
 		currentPos: 0,
-		height: 120 // Height of the elevator.
+		height: 120, // Height of the elevator.
+		center: 180 // target for people to move to
 	};
 	
 	this.initialize(place, config);
