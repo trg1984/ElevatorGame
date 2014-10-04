@@ -10,9 +10,9 @@
 		<script src="PersonGenerator.js"></script>
 		<script>
 			function init() {
-				floor1 = new Floor($('#floor1'), {name: '3'});
+				floor3 = new Floor($('#floor3'), {name: '3'});
 				floor2 = new Floor($('#floor2'), {name: '2'});
-				floor3 = new Floor($('#floor3'), {name: '1'});
+				floor1 = new Floor($('#floor1'), {name: '1'});
 				elevator = new Elevator($('#elevator'), {floors: [floor1, floor2, floor3]});
 				personGenerator = new PersonGenerator($('#game'), elevator);
 			}

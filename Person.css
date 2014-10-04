@@ -3,6 +3,14 @@
 	background-image: url('gfx/Person.png');
 }
 
+.outsideElevator{
+	z-index: 10;
+}
+
+.insideElevator{
+	z-index: 3;
+}
+
 .walkAnimation{
 	animation: walk .8s steps(3) infinite;
 }
@@ -11,12 +19,16 @@
 	animation: turn .5s steps(4) alternate 1;
 }
 
+.walkIntoElevatorAnimation{
+	animation: walkIntoElevator .5s steps(4) infinite;
+}
+
 .waitForElevator{
 	background-position: 80px -110px;
 }
 
 .moveTransition{
-	transition: left linear 5s;
+	transition: left 1s linear 0s, top .5s linear 0s, transform-scaleY 1s linear 0s
 }
 
 @keyframes walk {
@@ -27,4 +39,9 @@
 @keyframes turn{
 	0%		{ background-position: 0px -110px; }
 	100%	{ background-position: -160px -110px; }
+}
+
+@keyframes walkIntoElevator{
+	0%		{ background-position: 0px -220px; }
+	100%	{ background-position: -160px -220px; }
 }

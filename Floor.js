@@ -1,7 +1,7 @@
 function Floor(place, config) {
 
 	this.config = {
-		name: 'Untitled', // Name of the floor.
+		floorIndex: -1, // Name of the floor.
 		picUrl: 'gfx/floor1.png', // Floor's graphic.
 		height: 180, // Height of the floor in pixels.
 		width: 360, //width in pixels
@@ -19,7 +19,7 @@ Floor.prototype.initialize = function(place, config) {
 		.empty()
 		.addClass('floor')
 		.append(
-			'<div style="position: absolute; background-image: url(gfx/sides.png); z-index: 1; width: 360px; height: 180px;"></div>'+
+			'<div style="position: absolute; background-image: url(gfx/sides.png); z-index: 20; width: 360px; height: 180px;"></div>'+
 			'<div class="scene part" style="position:absolute; background-image: url(' + this.config.picUrl + '); width: 360px; height: ' + this.config.height + 'px; z-index:0;"></div>' +
 			'<div style="position: absolute; background-image: url(gfx/lowerButton.png); z-index: 0; width: 360px; height: 180px;"></div>'+
 			'<div style="position: absolute; background-image: url(gfx/upperButton.png); z-index: 0; width: 360px; height: 180px;"></div>'+

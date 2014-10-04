@@ -1,5 +1,7 @@
 function Elevator(place, config) {
 
+	var doorsOpenEvent = [];
+
 	this.config = {
 		floors: [],
 		floorIndex: -1,
@@ -10,10 +12,29 @@ function Elevator(place, config) {
 	
 	this.initialize(place, config);
 	
+	var self = this;
+	
 	var transitionEndEventName = "transitionend";
 	$("#elevator")[0].addEventListener(transitionEndEventName, function(){
-		console.log("transition ended");
+		if(self.doorsOpen()){
+			for(i=0; i<doorsOpenEvent.length; i++){
+				doorsOpenEvent[i](self.config.floors[self.config.floorIndex]);
+			}
+		}
 	},false);
+	
+	this.registerToDoorOpenEvent = function(callback){
+		doorsOpenEvent.push(callback);
+	}
+	
+	this.unregisterToDoorOpenEvent = function(callback){
+		for(i=0; i<doorsOpenEvent.length;i++){
+			if(doorsOpenEvent[i] == callback){
+				doorsOpenEvent.splice(i,1);
+				return;
+			}
+		}
+	}
 }
 
 Elevator.prototype.insertFloor = function(floor, index) {
@@ -32,8 +53,8 @@ Elevator.prototype.initialize = function(place, config) {
 		.addClass('elevator')
 		.append(
 			'<div class="box part"></div>' +
-			'<div class="leftDoor part"></div>' +
-			'<div class="rightDoor part"></div>' +
+			'<div class="door leftDoor part"></div>' +
+			'<div class="door rightDoor part"></div>' +
 			'<div class="frame part"></div>'
 		);
 	

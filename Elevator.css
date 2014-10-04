@@ -40,30 +40,27 @@
 	background-image: url('gfx/elevatorFrame.png');
 }
 
-.elevator .leftDoor {
+.elevator .door{
 	background-repeat: no-repeat;
 	background-position: 0 0;
 	background-attachment: scroll;
-	background-image: url('gfx/elevatorLeftDoor.png');
+	
+	z-index: 5;
 	
 	-webkit-transition: background-position 1s;
 	-moz-transition: background-position 1s;
 	-ms-transition: background-position 1s;
 	-o-transition: background-position 1s;
     transition: background-position 1s;
+
+}
+
+.elevator .leftDoor {
+	background-image: url('gfx/elevatorLeftDoor.png');
 }
 
 .elevator .rightDoor {
-	background-repeat: no-repeat;
-	background-position: 0 0;
-	background-attachment: scroll;
 	background-image: url('gfx/elevatorRightDoor.png');
-	
-	-webkit-transition: background-position 1s;
-	-moz-transition: background-position 1s;
-	-ms-transition: background-position 1s;
-	-o-transition: background-position 1s;
-    transition: background-position 1s;
 }
 
 .elevator .leftDoor.open {
