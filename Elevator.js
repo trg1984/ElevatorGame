@@ -1,6 +1,9 @@
 function Elevator(place, config) {
 
-	var doorsOpenEvent = [];
+	var doorsOpenEvent = []; //after doors have opened
+	var doorsCloseEvent = []; //after doors have closed
+	var elevatorStopEvent = []; //when elevator stops
+	var elevatorStartEvent = []; //when elevator starts
 
 	this.config = {
 		floors: [],
@@ -15,26 +18,111 @@ function Elevator(place, config) {
 	var self = this;
 	
 	var transitionEndEventName = "transitionend";
-	$("#elevator")[0].addEventListener(transitionEndEventName, function(){
+	
+	//transition for elevator, for hiding/showing people
+	this.place[0].addEventListener(transitionEndEventName, function(e){
+		self.fireEvent(elevatorStopEvent, self.config.currentPos);	
+	},false);
+	
+	//transition for doors, so people can walk out
+	this.place.find('.part.leftDoor, .part.rightDoor')[0].addEventListener(transitionEndEventName, function(e){
+		var currentFloor = self.config.floors[self.config.floorIndex];
+		e.stopPropagation();
 		if(self.doorsOpen()){
-			for(i=0; i<doorsOpenEvent.length; i++){
-				doorsOpenEvent[i](self.config.floors[self.config.floorIndex]);
-			}
+			self.fireEvent(doorsOpenEvent, currentFloor);
+		}else{
+			self.fireEvent(doorsCloseEvent, currentFloor);		
 		}
 	},false);
 	
+	this.fireEvent = function(eventArray, parameter){
+		for(i=0; i<eventArray.length; i++){
+			eventArray[i](parameter);
+		}
+	}
+	
+	this.registerToElevatorEvents = function(openCallback, closeCallback){
+		this.registerToElevatorStartEvent(openCallback);
+		this.registerToElevatorStopEvent(closeCallback);
+	}
+	
+	this.registerToElevatorStartEvent = function(callback){
+		this.pushToArray(elevatorStartEvent, callback);
+	}
+	
+	this.unregisterToElevatorStartEvent = function(callback){
+		this.removeFromArray(elevatorStartEvent, callback);
+	}
+	
+	this.registerToElevatorStopEvent = function(callback){
+		this.pushToArray(elevatorStopEvent, callback);
+	}
+	
+	this.registerToDoorEvents = function(openCallback, closeCallback){
+		this.registerToDoorOpenEvent(openCallback);
+		this.registerToDoorCloseEvent(closeCallback);
+	}
+	
+	this.registerToDoorCloseEvent = function(callback){
+		this.pushToArray(doorsCloseEvent, callback);
+	}
+	
+	this.unregisterToDoorCloseEvent = function(callback){
+		this.removeFromArray(doorsCloseEvent, callback);
+	}
+
 	this.registerToDoorOpenEvent = function(callback){
-		doorsOpenEvent.push(callback);
+		this.pushToArray(doorsOpenEvent, callback);
 	}
 	
 	this.unregisterToDoorOpenEvent = function(callback){
-		for(i=0; i<doorsOpenEvent.length;i++){
-			if(doorsOpenEvent[i] == callback){
-				doorsOpenEvent.splice(i,1);
+		this.removeFromArray(doorsOpenEvent, callback);
+	}
+	
+	this.pushToArray = function(array, element){
+		array.push(element);
+	}
+	
+	this.removeFromArray =function(array, element){
+		for(i=0; i<array.length;i++){
+			if(array[i] == callback){
+				array.splice(i,1);
 				return;
 			}
 		}
 	}
+	
+	this.moveUp = function(n) {
+	self.fireEvent(elevatorStartEvent);
+		console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+		if (!this.doorsOpen() && (this.config.floorIndex > 0)) {
+			
+			// Move up to the next floor's elevator position.
+			this.config.currentPos -= this.currentFloor.config.elevatorPos;
+			--this.config.floorIndex;
+			this.currentFloor = this.config.floors[this.config.floorIndex];
+			this.config.currentPos -= this.currentFloor.config.height - this.currentFloor.config.elevatorPos;
+			
+			this.place.css('top', this.config.currentPos);
+		}
+		console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+	}
+
+	this.moveDown = function(n) {
+	self.fireEvent(elevatorStartEvent);
+	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+	if (!this.doorsOpen() && (this.config.floorIndex < this.config.floors.length - 1)) {
+		//debugger;
+		// Move down to the previous floor's elevator position.
+		this.config.currentPos += this.currentFloor.config.height - this.currentFloor.config.elevatorPos;
+		++this.config.floorIndex;
+		this.currentFloor = this.config.floors[this.config.floorIndex];
+		this.config.currentPos += this.currentFloor.config.elevatorPos;
+		
+		this.place.css('top', this.config.currentPos);
+	}
+	console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+}
 }
 
 Elevator.prototype.insertFloor = function(floor, index) {
@@ -84,39 +172,11 @@ Elevator.prototype.toggleTimeLapse = function() {
 
 Elevator.prototype.toggleDoors = function() {
 	// TODO only open doors if elevator is not moving.
+//	if(!this.doorsOpen())
+		
 	this.place.find('.part.leftDoor, .part.rightDoor').toggleClass('open');
 }
 
 Elevator.prototype.doorsOpen = function() {
 	return this.place.find('.part.leftDoor, .part.rightDoor').hasClass('open');
-}
-
-Elevator.prototype.moveUp = function(n) {
-	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
-	if (!this.doorsOpen() && (this.config.floorIndex > 0)) {
-		
-		// Move up to the next floor's elevator position.
-		this.config.currentPos -= this.currentFloor.config.elevatorPos;
-		--this.config.floorIndex;
-		this.currentFloor = this.config.floors[this.config.floorIndex];
-		this.config.currentPos -= this.currentFloor.config.height - this.currentFloor.config.elevatorPos;
-		
-		this.place.css('top', this.config.currentPos);
-	}
-	console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
-}
-
-Elevator.prototype.moveDown = function(n) {
-	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
-	if (!this.doorsOpen() && (this.config.floorIndex < this.config.floors.length - 1)) {
-		//debugger;
-		// Move down to the previous floor's elevator position.
-		this.config.currentPos += this.currentFloor.config.height - this.currentFloor.config.elevatorPos;
-		++this.config.floorIndex;
-		this.currentFloor = this.config.floors[this.config.floorIndex];
-		this.config.currentPos += this.currentFloor.config.elevatorPos;
-		
-		this.place.css('top', this.config.currentPos);
-	}
-	console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
 }

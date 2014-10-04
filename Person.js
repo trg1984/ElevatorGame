@@ -27,9 +27,10 @@ function Person(place, config) {
 			
 	};
 	
-	addEventListenerFunction(place[0], $(place[0]).find('.person')[0], "walkAnimation", "turnAnimation", "transitionend");
-	addEventListenerFunction(place[0], $(place[0]).find('.person')[0], "turnAnimation", "waitForElevator", "animationend", function(){ 
-		config.targetElevator.registerToDoorOpenEvent(reactToDoorOpenEvent); 
+	var animatedElement = $(place[0]).find('.person')[0];
+	addEventListenerFunction(place[0], animatedElement, "walkAnimation", "turnAnimation", "transitionend");
+	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "animationend", function(){ 
+		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 
 	});
 	
 	this.moveToElevator = function(){
@@ -54,19 +55,42 @@ function Person(place, config) {
 	}
 	
 	var reactToDoorOpenEvent = function(floorOfElevator){
-		if(config.startingFloor != floorOfElevator)
-			return;
-			
-		if(!insideElevator){
+		if(!insideElevator && config.startingFloor == floorOfElevator){
+			insideElevator = !insideElevator;
 			self.moveTo((config.targetElevator.config.center+(5-Math.floor(Math.random()*10)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
+			addEventListenerFunction(place[0], place.find('.person')[0], "waitForElevator","walkIntoElevatorAnimation", "animationend", function(){
+				self.changeCssClassName(place.find('.person')[0], "walkIntoElevatorAnimation", "waitForElevator");
+				place.removeClass("moveTransition");
+			});
 			place[0].style.transform= place[0].style.transform+" scaleY(.95)"
 			self.changeCssClassName(place[0], "outsideElevator", "insideElevator");
-			insideElevator = !insideElevator;
-		}else{
+			config.targetElevator.registerToElevatorEvents(hidePerson, showPerson);
+			return;
 		}
 		
-		window.setTimeout(config.targetElevator.unregisterToDoorOpenEvent(reactToDoorOpenEvent),50); 
+		if(insideElevator && config.targetFloor == floorOfElevator){
+			place.toggleClass("moveTransition");
+			insideElevator = !insideElevator;
+			console.log("stepping out");
+		}		
 	};
+	
+	var reactToDoorCloseEvent =function(floorOfElevator){
+		if(insideElevator){
+			place.removeClass("moveTransition");
+			hidePerson();
+		}
+	}
+	
+	var showPerson = function(elevatorPos){
+		console.log(elevatorPos);
+		place[0].style.top=(elevatorPos+5+Math.random()*10)+'px';
+		place[0].style.visibility="visible";
+	}
+	
+	var hidePerson = function(){
+		place[0].style.visibility="hidden";
+	}
 	
 	window.setTimeout(this.moveToElevator,100);
 	
