@@ -14,7 +14,8 @@ function Person(place, config) {
 	var insideElevator = false;
 	
 	var self = this;
-
+	var direction = 1; //scaleX; 1 walks left, -1 walks right
+	
 	var addEventListenerFunction = function(htmlElement, animatedElement, oldClassName, newClassName, animationEventName, animationFinishedFunction){
 		htmlElement.addEventListener(animationEventName, function(){
 			animatedElement.className=animatedElement.className.replace(oldClassName,newClassName);
@@ -35,15 +36,16 @@ function Person(place, config) {
 	
 	this.moveToElevator = function(){
 		var targetPos = config.targetElevator.config.center+((Math.random()*40)-20)+'px';
-		self.setScale(targetPos);
+		self.setDirection(targetPos);
+		place[0].style.transform="scaleX("+direction+")";
 		self.moveTo(targetPos);
 	}
 
-	this.setScale = function(targetLeft){
+	this.setDirection = function(targetLeft){
 		if(place[0].style.left < targetLeft)
-			place[0].style.transform="scaleX(-1)";
+			direction=-1;
 		else
-			place[0].style.transform="scaleX(1)";
+			direction=1;
 	}
 	
 	this.moveTo = function(left, top){
@@ -57,9 +59,14 @@ function Person(place, config) {
 	var reactToDoorOpenEvent = function(floorOfElevator){
 		if(!insideElevator && config.startingFloor == floorOfElevator){
 			insideElevator = !insideElevator;
-			self.moveTo((config.targetElevator.config.center+(5-Math.floor(Math.random()*10)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
-			addEventListenerFunction(place[0], place.find('.person')[0], "waitForElevator","walkIntoElevatorAnimation", "animationend", function(){
-				self.changeCssClassName(place.find('.person')[0], "walkIntoElevatorAnimation", "waitForElevator");
+			self.moveTo((config.targetElevator.config.center-direction*(20+Math.floor(Math.random()*30)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
+			var animatedElement = $(place[0]).find('.person')[0];
+			self.changeCssClassName(animatedElement, "waitForElevator", "walkIntoElevatorAnimation");
+			addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "transitionend", function(){
+				console.log("moveTransition finisher");
+				addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "animationend", function(){
+					self.changeCssClassName(animatedElement, "turnInElevatorAnimation", "waitInElevator");
+				});
 				place.removeClass("moveTransition");
 			});
 			place[0].style.transform= place[0].style.transform+" scaleY(.95)"

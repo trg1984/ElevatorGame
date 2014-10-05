@@ -23,8 +23,16 @@
 	animation: walkIntoElevator .5s steps(4) infinite;
 }
 
+.turnInElevatorAnimation{
+	animation: turnInElevator .8s steps(5) 1;
+}
+
 .waitForElevator{
 	background-position: 80px -110px;
+}
+
+.waitInElevator{
+	background-position: 40px -330px;
 }
 
 .moveTransition{
@@ -44,4 +52,9 @@
 @keyframes walkIntoElevator{
 	0%		{ background-position: 0px -220px; }
 	100%	{ background-position: -160px -220px; }
+}
+
+@keyframes turnInElevator{
+	0%		{ background-position: 0px -330px; }
+	100%	{ background-position: -200px -330px; }
 }
