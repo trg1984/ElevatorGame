@@ -3,11 +3,14 @@
 		<link href="Elevator.css" type="text/css" rel="stylesheet" />
 		<link href="Floor.css" type="text/css" rel="stylesheet" />
 		<link href="Person.css" type="text/css" rel="stylesheet" />
+		<link href="CodeEditor.css" type="text/css" rel="stylesheet" />
 		<script src="jquery-1.11.1.js"></script>
 		<script src="Elevator.js"></script>
 		<script src="Floor.js"></script>
 		<script src="Person.js"></script>
 		<script src="PersonGenerator.js"></script>
+		<script src="CodeEditor.js"></script>
+		<script src="machine.js"></script>
 		<script>
 			function init() {
 				floor3 = new Floor($('#floor3'), {name: '3'});
@@ -15,7 +18,8 @@
 				floor1 = new Floor($('#floor1'), {name: '1'});
 				elevator = new Elevator($('#elevator'), {floors: [floor1, floor2, floor3]});
 				personGenerator = new PersonGenerator($('#game'), elevator);
-			}
+				editor = new CodeEditor($('#codeEditor'), { /* defaults */ });
+			};
 		
 			$(document).ready(
 				function(e) {
@@ -72,7 +76,7 @@
 				margin: 4px;
 				float: left;
 				clear: left;
-				width: 20em;
+				width: 190px;
 				height: 32px;
 				z-index: 1;
 				position: absolute;
@@ -83,6 +87,7 @@
 				position: absolute;
 				top: 0;
 				left: 0;
+				height: 100%;
 			}
 			
 		</style>
@@ -99,6 +104,7 @@
 			<div id="floor1"></div>
 			<div id="floor2"></div>
 			<div id="floor3"></div>
+			<div id="codeEditor"></div>
 		</div>
 	</body>
 </html>
