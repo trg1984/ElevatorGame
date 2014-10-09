@@ -12,22 +12,42 @@
 }
 
 .walkAnimation{
+	-webkit-animation: walk .8s steps(3) infinite;
+	-moz-animation: walk .8s steps(3) infinite;
+	-ms-animation: walk .8s steps(3) infinite;
+	-o-animation: walk .8s steps(3) infinite;
 	animation: walk .8s steps(3) infinite;
 }
 
 .turnAnimation{
+	-webkit-animation: turn .5s steps(4) alternate 1;
+	-moz-animation: turn .5s steps(4) alternate 1;
+	-ms-animation: turn .5s steps(4) alternate 1;
+	-o-animation: turn .5s steps(4) alternate 1;
 	animation: turn .5s steps(4) alternate 1;
 }
 
 .walkIntoElevatorAnimation{
+	-webkit-animation: walkIntoElevator .5s steps(4) infinite;
+	-moz-animation: walkIntoElevator .5s steps(4) infinite;
+	-ms-animation: walkIntoElevator .5s steps(4) infinite;
+	-o-animation: walkIntoElevator .5s steps(4) infinite;
 	animation: walkIntoElevator .5s steps(4) infinite;
 }
 
 .walkOutElevatorAnimation{
+	-webkit-animation: walkOutElevator .5s steps(4) infinite;
+	-moz-animation: walkOutElevator .5s steps(4) infinite;
+	-ms-animation: walkOutElevator .5s steps(4) infinite;
+	-o-animation: walkOutElevator .5s steps(4) infinite;
 	animation: walkOutElevator .5s steps(4) infinite;
 }
 
 .turnInElevatorAnimation{
+	-webkit-animation: turnInElevator .8s steps(5) 1;
+	-moz-animation: turnInElevator .8s steps(5) 1;
+	-ms-animation: turnInElevator .8s steps(5) 1;
+	-o-animation: turnInElevator .8s steps(5) 1;
 	animation: turnInElevator .8s steps(5) 1;
 }
 
@@ -43,26 +63,107 @@
 	transition: left 1s linear 0s, top .5s linear 0s, transform-scaleY 1s linear 0s
 }
 
+@-webkit-keyframes walk {
+	0%		{ background-position: 0px 0px;}
+	100%	{ background-position: -120px 0px; }
+}
+@-moz-keyframes walk {
+	0%		{ background-position: 0px 0px;}
+	100%	{ background-position: -120px 0px; }
+}
+@-ms-keyframes walk {
+	0%		{ background-position: 0px 0px;}
+	100%	{ background-position: -120px 0px; }
+}
+@-o-keyframes walk {
+	0%		{ background-position: 0px 0px;}
+	100%	{ background-position: -120px 0px; }
+}
+
 @keyframes walk {
 	0%		{ background-position: 0px 0px;}
 	100%	{ background-position: -120px 0px; }
 }
 
+@-webkit-keyframes turn{
+	0%		{ background-position: 0px -110px; }
+	100%	{ background-position: -160px -110px; }
+}
+@-moz-keyframes turn{
+	0%		{ background-position: 0px -110px; }
+	100%	{ background-position: -160px -110px; }
+}
+@-ms-keyframes turn{
+	0%		{ background-position: 0px -110px; }
+	100%	{ background-position: -160px -110px; }
+}
+@-o-keyframes turn{
+	0%		{ background-position: 0px -110px; }
+	100%	{ background-position: -160px -110px; }
+}
 @keyframes turn{
 	0%		{ background-position: 0px -110px; }
 	100%	{ background-position: -160px -110px; }
 }
 
+@-webkit-keyframes walkIntoElevator{
+	0%		{ background-position: 0px -220px; }
+	100%	{ background-position: -160px -220px; }
+}
+@-moz-keyframes walkIntoElevator{
+	0%		{ background-position: 0px -220px; }
+	100%	{ background-position: -160px -220px; }
+}
+@-ms-keyframes walkIntoElevator{
+	0%		{ background-position: 0px -220px; }
+	100%	{ background-position: -160px -220px; }
+}
+@-o-keyframes walkIntoElevator{
+	0%		{ background-position: 0px -220px; }
+	100%	{ background-position: -160px -220px; }
+}
 @keyframes walkIntoElevator{
 	0%		{ background-position: 0px -220px; }
 	100%	{ background-position: -160px -220px; }
 }
 
+@-webkit-keyframes turnInElevator{
+	0%		{ background-position: 0px -330px; }
+	100%	{ background-position: -200px -330px; }
+}
+@-moz-keyframes turnInElevator{
+	0%		{ background-position: 0px -330px; }
+	100%	{ background-position: -200px -330px; }
+}
+@-ms-keyframes turnInElevator{
+	0%		{ background-position: 0px -330px; }
+	100%	{ background-position: -200px -330px; }
+}
+@-o-keyframes turnInElevator{
+	0%		{ background-position: 0px -330px; }
+	100%	{ background-position: -200px -330px; }
+}
 @keyframes turnInElevator{
 	0%		{ background-position: 0px -330px; }
 	100%	{ background-position: -200px -330px; }
 }
 
+@-webkit-keyframes walkOutElevator{
+	0%		{ background-position: 0px -440px; }
+	100%	{ background-position: -160px -440px; }
+}
+@-moz-keyframes walkOutElevator{
+	0%		{ background-position: 0px -440px; }
+	100%	{ background-position: -160px -440px; }
+}
+@-ms-keyframes walkOutElevator{
+	0%		{ background-position: 0px -440px; }
+	100%	{ background-position: -160px -440px; }
+}
+@-o-keyframes walkOutElevator{
+	0%		{ background-position: 0px -440px; }
+	100%	{ background-position: -160px -440px; }
+}
 @keyframes walkOutElevator{
 	0%		{ background-position: 0px -440px; }
 	100%	{ background-position: -160px -440px; }

@@ -1,8 +1,5 @@
 function Person(place, config) {
 
-	var transitionEnd = "";
-	var animationEnd = "";
-
 	this.config = {
 		name: 'Untitled', // Name of the person.
 		picUrl: 'gfx/Person.png', // Persons's graphic.
@@ -20,20 +17,23 @@ function Person(place, config) {
 	var direction = 1; //scaleX; 1 walks left, -1 walks right
 	
 	var addEventListenerFunction = function(htmlElement, animatedElement, oldClassName, newClassName, animationEventName, animationFinishedFunction){
-		htmlElement.addEventListener(animationEventName, function(){
-			animatedElement.className=animatedElement.className.replace(oldClassName,newClassName);
-			htmlElement.removeEventListener(animationEventName, this);
-			
-			if(animationFinishedFunction){
-				animationFinishedFunction();
-			}
-		}, false);
-			
+		var pfx = ["webkit", "MS", "moz", "o", ""];
+		for (var p = 0; p < pfx.length; p++) {
+			if (p>1) animationEventName = animationEventName.toLowerCase();
+			htmlElement.addEventListener(pfx[p]+animationEventName, function(){
+				animatedElement.className=animatedElement.className.replace(oldClassName,newClassName);
+				htmlElement.removeEventListener(pfx[p]+animationEventName, this);
+					
+				if(animationFinishedFunction){
+					animationFinishedFunction();
+				}
+			}, false);
+		}			
 	};
 	
 	var animatedElement = $(place[0]).find('.person')[0];
-	addEventListenerFunction(place[0], animatedElement, "walkAnimation", "turnAnimation", "transitionend");
-	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "animationend", function(){ 
+	addEventListenerFunction(place[0], animatedElement, "walkAnimation", "turnAnimation", "TransitionEnd");
+	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "AnimationEnd", function(){ 
 		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 
 	});
 	
@@ -67,9 +67,9 @@ function Person(place, config) {
 			self.moveTo((config.targetElevator.config.center-direction*(20+Math.floor(Math.random()*30)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
 			var animatedElement = $(place[0]).find('.person')[0];
 			self.changeCssClassName(animatedElement, "waitForElevator", "walkIntoElevatorAnimation");
-			addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "transitionend", function(){
+			addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "TransitionEnd", function(){
 				console.log("moveTransition finisher");
-				addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "animationend", function(){
+				addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "AnimationEnd", function(){
 					self.changeCssClassName(animatedElement, "turnInElevatorAnimation", "waitInElevator");
 				});
 				place.removeClass("moveTransition");
@@ -86,11 +86,11 @@ function Person(place, config) {
 			insideElevator = !insideElevator;
 			self.changeCssClassName(place[0], "insideElevator", "outsideElevator");
 			self.changeCssClassName(animatedElement, "waitInElevator", "walkOutElevatorAnimation");
-			addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "transitionend", function(){
-				var targetX = Math.round(Math.random())*(self.config.targetFloor.getWidth()-40)+'px';
+			addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "TransitionEnd", function(){
+				var targetX = Math.round(Math.random())*(self.config.targetFloor.getWidth()-20)+'px';
 				place[0].className = place[0].className+" moveTransition";
 				self.setDirection(targetX);
-				addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "transitionend", function(){
+				addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "TransitionEnd", function(){
 					self.despawn();
 				});
 				self.moveTo(targetX);
