@@ -1,5 +1,8 @@
 function Person(place, config) {
 
+	var transitionEnd = "";
+	var animationEnd = "";
+
 	this.config = {
 		name: 'Untitled', // Name of the person.
 		picUrl: 'gfx/Person.png', // Persons's graphic.
@@ -10,7 +13,7 @@ function Person(place, config) {
 	};
 	
 	this.initialize(place, config);
-	
+
 	var insideElevator = false;
 	
 	var self = this;
@@ -37,7 +40,6 @@ function Person(place, config) {
 	this.moveToElevator = function(){
 		var targetPos = config.targetElevator.config.center+((Math.random()*40)-20)+'px';
 		self.setDirection(targetPos);
-		place[0].style.transform="scaleX("+direction+")";
 		self.moveTo(targetPos);
 	}
 
@@ -46,6 +48,9 @@ function Person(place, config) {
 			direction=-1;
 		else
 			direction=1;
+		
+		var transformStr = place[0].style.transform.replace(/scaleX(.*)/,"scaleX("+direction+")");
+		place[0].style.transform = transformStr;
 	}
 	
 	this.moveTo = function(left, top){
@@ -76,9 +81,25 @@ function Person(place, config) {
 		}
 		
 		if(insideElevator && config.targetFloor == floorOfElevator){
-			place.toggleClass("moveTransition");
+			var animatedElement = $(place[0]).find('.person')[0];
+			place[0].className = place[0].className+" moveTransition";
 			insideElevator = !insideElevator;
+			self.changeCssClassName(place[0], "insideElevator", "outsideElevator");
+			self.changeCssClassName(animatedElement, "waitInElevator", "walkOutElevatorAnimation");
+			addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "transitionend", function(){
+				var targetX = Math.round(Math.random())*(self.config.targetFloor.getWidth()-40)+'px';
+				place[0].className = place[0].className+" moveTransition";
+				self.setDirection(targetX);
+				addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "transitionend", function(){
+					self.despawn();
+				});
+				self.moveTo(targetX);
+				console.log("stepped out");
+			});
+			self.moveTo(self.getX()+'px', self.config.targetElevator.getCurrentFloor().getWalkableHeight()+'px');
+			place[0].style.transform= place[0].style.transform.replace(/scaleY(.*)/, "scaleY(1)");
 			console.log("stepping out");
+			
 		}		
 	};
 	
@@ -100,9 +121,15 @@ function Person(place, config) {
 	}
 	
 	window.setTimeout(this.moveToElevator,100);
-	
+
+	this.getX = function(){
+		var pixelPos = self.place[0].style.left;
+		return parseInt(pixelPos.substring(0,pixelPos.indexOf('p')));
+	}
+
 	this.getY = function(){
-		return parseInt(place[0].style.top.substr(0,place[0].style.top.indexOf('p')));
+		var pixelPos = self.place[0].style.top;
+		return parseInt(pixelPos.substr(0,pixelPos.indexOf('p')));
 	}
 	
 	this.changeCssClassName = function(element, oldName, newName){
@@ -111,11 +138,19 @@ function Person(place, config) {
 }
 
 Person.prototype.initialize = function(place, config) {
+	
+	this.config = config;
 	this.place = place;
 	this.place
 		.empty()
+		.css({transform:'scaleX(1) scaleY(1)'})
 		.addClass('person outsideElevator')
 		.append(
 			'<div class="scene part person walkAnimation" style="background-image: url(' + this.config.picUrl + '); width: 40px; height: ' + this.config.height + 'px;"></div>'
 		);
+}
+
+Person.prototype.despawn = function() {
+	console.log("despawned");
+	this.place[0].parentNode.removeChild(this.place[0]);
 }

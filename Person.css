@@ -23,6 +23,10 @@
 	animation: walkIntoElevator .5s steps(4) infinite;
 }
 
+.walkOutElevatorAnimation{
+	animation: walkOutElevator .5s steps(4) infinite;
+}
+
 .turnInElevatorAnimation{
 	animation: turnInElevator .8s steps(5) 1;
 }
@@ -57,4 +61,9 @@
 @keyframes turnInElevator{
 	0%		{ background-position: 0px -330px; }
 	100%	{ background-position: -200px -330px; }
+}
+
+@keyframes walkOutElevator{
+	0%		{ background-position: 0px -440px; }
+	100%	{ background-position: -160px -440px; }
 }

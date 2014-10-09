@@ -92,6 +92,10 @@ function Elevator(place, config) {
 		}
 	}
 	
+	this.getCurrentFloor = function(){
+		return self.config.floors[self.config.floorIndex];
+	}
+	
 	this.moveUp = function(n) {
 	self.fireEvent(elevatorStartEvent);
 		console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);

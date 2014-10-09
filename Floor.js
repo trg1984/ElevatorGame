@@ -11,6 +11,14 @@ function Floor(place, config) {
 	};
 	
 	this.initialize(place, config);
+	
+	this.getWalkableHeight = function(){
+		return this.config.walkableHeight+this.config.currentPos;
+	}
+	
+	this.getWidth = function(){
+		return this.config.width;
+	}
 }
 
 Floor.prototype.initialize = function(place, config) {

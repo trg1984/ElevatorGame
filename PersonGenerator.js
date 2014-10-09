@@ -43,7 +43,7 @@ function PersonGenerator(gameDiv, targetElevator){
 	}
 	
 	this.calculateTopOffset = function(targetFloor){
-		return targetFloor.config.walkableHeight+targetFloor.config.currentPos;
+		return targetFloor.getWalkableHeight();
 	}
 	
 	this.determineSideOffset = function(floor){
