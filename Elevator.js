@@ -98,7 +98,8 @@ function Elevator(place, config) {
 	
 	this.moveUp = function(n) {
 	self.fireEvent(elevatorStartEvent);
-		console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+	this.config.floors[this.config.floorIndex].changeUpButtonState(false);
 		if (!this.doorsOpen() && (this.config.floorIndex > 0)) {
 			
 			// Move up to the next floor's elevator position.
@@ -115,6 +116,7 @@ function Elevator(place, config) {
 	this.moveDown = function(n) {
 	self.fireEvent(elevatorStartEvent);
 	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
+	this.config.floors[this.config.floorIndex].changeDownButtonState(false);
 	if (!this.doorsOpen() && (this.config.floorIndex < this.config.floors.length - 1)) {
 		//debugger;
 		// Move down to the previous floor's elevator position.

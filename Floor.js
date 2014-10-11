@@ -1,5 +1,7 @@
 function Floor(place, config) {
 
+	var callButtonChangedEvent = [];
+
 	this.config = {
 		floorIndex: -1, // Name of the floor.
 		picUrl: 'gfx/floor1.png', // Floor's graphic.
@@ -14,11 +16,44 @@ function Floor(place, config) {
 	
 	this.getWalkableHeight = function(){
 		return this.config.walkableHeight+this.config.currentPos;
-	}
+	};
 	
 	this.getWidth = function(){
 		return this.config.width;
+	};
+	
+	this.changeUpButtonState = function(on){
+		if(on){
+			place.find('.floorButtonUp').show();
+			triggerCallButtonEvent(true);
+		}else{
+			place.find('.floorButtonUp').hide();
+		}
+	};
+	
+	this.changeDownButtonState = function(on){
+		if(on){
+			place.find('.floorButtonDown').show();
+			triggerCallButtonEvent(false);
+		}else{
+			place.find('.floorButtonDown').hide();
+		}
+	};
+	
+	this.resetFloorButtons = function(){
+		changeDownButtonState(false);
+		changeUpButtonState(false);
+	};
+	
+	var registerToButtonStateChange = function(callback){
+		callButtonChangedEvent.push(callback);
 	}
+	
+	var triggerCallButtonEvent = function(direction){
+		for(i=0; i<callButtonChangedEvent.length; i++){
+			callButtonChangedEvent[i](this, direction);
+		}
+	};
 }
 
 Floor.prototype.initialize = function(place, config) {
@@ -29,8 +64,8 @@ Floor.prototype.initialize = function(place, config) {
 		.append(
 			'<div style="position: absolute; background-image: url(gfx/sides.png); z-index: 20; width: 360px; height: 180px;"></div>'+
 			'<div class="scene part" style="position:absolute; background-image: url(' + this.config.picUrl + '); z-index: 10; width: 360px; height: ' + this.config.height + 'px;"></div>' +
-			'<div class="floorButtonUp" style="position: absolute; background-image: url(gfx/lowerButton.png); z-index: 10; width: 360px; height: 180px; visibility:"hidden";"></div>'+
-			'<div class="floorButtonDown" style="position: absolute; background-image: url(gfx/upperButton.png); z-index: 10; width: 360px; height: 180px; visibility:"hidden";"></div>'+
+			'<div class="floorButtonDown" style="position: absolute; background-image: url(gfx/lowerButton.png); z-index: 10; width: 360px; height: 180px; display: none;"></div>'+
+			'<div class="floorButtonUp" style="position: absolute; background-image: url(gfx/upperButton.png); z-index: 10; width: 360px; height: 180px; display: none;"></div>'+
 			'<div class="leftDoor part"></div>' +
 			'<div class="rightDoor part"></div>'
 		);

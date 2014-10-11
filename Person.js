@@ -36,6 +36,8 @@ function Person(place, config) {
 	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "AnimationEnd", function(){
 		if(config.startingFloor == config.targetElevator.getCurrentFloor() && config.targetElevator.doorsOpen()){
 			reactToDoorOpenEvent(config.targetElevator.getCurrentFloor());
+		}else{
+			pressElevatorCallButton();
 		}
 		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 				
 	});
@@ -64,8 +66,17 @@ function Person(place, config) {
 		}
 	}
 	
+	var pressElevatorCallButton = function(){
+		if(config.startingFloor.config.floorIndex < config.targetFloor.config.floorIndex){
+			config.startingFloor.changeDownButtonState(true);
+		}else{
+			config.startingFloor.changeUpButtonState(true);
+		}
+	}
+	
 	var reactToDoorOpenEvent = function(floorOfElevator){
 		if(!insideElevator && config.startingFloor == floorOfElevator){
+		console.log(config.targetFloor);
 			insideElevator = !insideElevator;
 			self.moveTo((config.targetElevator.config.center-direction*(20+Math.floor(Math.random()*30)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
 			var animatedElement = $(place[0]).find('.person')[0];
