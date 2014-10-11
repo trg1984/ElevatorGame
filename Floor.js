@@ -28,9 +28,9 @@ Floor.prototype.initialize = function(place, config) {
 		.addClass('floor')
 		.append(
 			'<div style="position: absolute; background-image: url(gfx/sides.png); z-index: 20; width: 360px; height: 180px;"></div>'+
-			'<div class="scene part" style="position:absolute; background-image: url(' + this.config.picUrl + '); width: 360px; height: ' + this.config.height + 'px; z-index:0;"></div>' +
-			'<div style="position: absolute; background-image: url(gfx/lowerButton.png); z-index: 0; width: 360px; height: 180px;"></div>'+
-			'<div style="position: absolute; background-image: url(gfx/upperButton.png); z-index: 0; width: 360px; height: 180px;"></div>'+
+			'<div class="scene part" style="position:absolute; background-image: url(' + this.config.picUrl + '); z-index: 10; width: 360px; height: ' + this.config.height + 'px;"></div>' +
+			'<div class="floorButtonUp" style="position: absolute; background-image: url(gfx/lowerButton.png); z-index: 10; width: 360px; height: 180px; visibility:"hidden";"></div>'+
+			'<div class="floorButtonDown" style="position: absolute; background-image: url(gfx/upperButton.png); z-index: 10; width: 360px; height: 180px; visibility:"hidden";"></div>'+
 			'<div class="leftDoor part"></div>' +
 			'<div class="rightDoor part"></div>'
 		);

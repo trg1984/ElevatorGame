@@ -33,8 +33,11 @@ function Person(place, config) {
 	
 	var animatedElement = $(place[0]).find('.person')[0];
 	addEventListenerFunction(place[0], animatedElement, "walkAnimation", "turnAnimation", "TransitionEnd");
-	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "AnimationEnd", function(){ 
-		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 
+	addEventListenerFunction(place[0], animatedElement, "turnAnimation", "waitForElevator", "AnimationEnd", function(){
+		if(config.startingFloor == config.targetElevator.getCurrentFloor() && config.targetElevator.doorsOpen()){
+			reactToDoorOpenEvent(config.targetElevator.getCurrentFloor());
+		}
+		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 				
 	});
 	
 	this.moveToElevator = function(){
