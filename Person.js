@@ -6,9 +6,11 @@ function Person(place, config) {
 		height: 110, // Height of the person in pixels.
 		targetElevator: null,
 		startingFloor: null,
-		targetFloor: null
+		targetFloor: null,
+		patience: 1000,
+		patienceRefreshRate : 10
 	};
-	
+		
 	this.initialize(place, config);
 
 	var insideElevator = false;
@@ -19,15 +21,21 @@ function Person(place, config) {
 	var addEventListenerFunction = function(htmlElement, animatedElement, oldClassName, newClassName, animationEventName, animationFinishedFunction){
 		var pfx = ["webkit", "MS", "moz", "o", ""];
 		for (var p = 0; p < pfx.length; p++) {
+		var k = p + 0;
 			if (p>1) animationEventName = animationEventName.toLowerCase();
-			htmlElement.addEventListener(pfx[p]+animationEventName, function(){
+			//console.log("added event listener "+(pfx[k]+animationEventName)+" "+this);
+			var animationEndFunction = function(){
 				animatedElement.className=animatedElement.className.replace(oldClassName,newClassName);
-				htmlElement.removeEventListener(pfx[p]+animationEventName, this);
+					for (var p1 = 0; p1 < pfx.length; p1++) {
+						htmlElement.removeEventListener(pfx[p1]+animationEventName, this);
+						//console.log("removed event listener "+(pfx[p1]+animationEventName)+" "+this);
+					}
 					
 				if(animationFinishedFunction){
 					animationFinishedFunction();
 				}
-			}, false);
+			};
+			htmlElement.addEventListener(pfx[p]+animationEventName, animationEndFunction, false);
 		}			
 	};
 	
@@ -38,9 +46,45 @@ function Person(place, config) {
 			reactToDoorOpenEvent(config.targetElevator.getCurrentFloor());
 		}else{
 			pressElevatorCallButton();
+			//console.log("started waiting");
+			self.startWaiting();
 		}
 		config.targetElevator.registerToDoorEvents(reactToDoorOpenEvent, reactToDoorCloseEvent); 				
 	});
+		
+	var interval;
+	
+	this.startWaiting = function(){
+		if(this.config.patience>0)
+			interval = setInterval(this.decreasePatience, this.config.patienceRefreshRate);
+	}
+	
+	this.decreasePatience = function(){
+	//console.log("decreasing patience by "+100+" patience left: "+ config.patience);
+		config.patience -= 100;
+		if(config.patience <= 0){
+			clearInterval(interval);
+			var targetX = Math.round(Math.random())*(self.config.startingFloor.getWidth()-20)+'px';
+			self.setDirection(targetX);
+			self.changeCssClassName($(place[0]).find('.person')[0],"waitForElevator", "turnBackAnimation");
+			//console.log("changed class");
+			addEventListenerFunction(place[0], $(place[0]).find('.person')[0], "turnBackAnimation", "walkAnimation", "AnimationEnd", function(){
+				self.moveTo(targetX);
+				addEventListenerFunction(place[0], $(place[0]).find('.person')[0], "walkAnimation", "walkAnimation", "TransitionEnd", function(){
+					self.despawn();
+				});
+			});			
+		}
+	}
+	
+	this.moveToDespawn = function(floorToDespawnIn, oldAnimationName, newAnimationName){
+		var targetX = Math.round(Math.random())*(floorToDespawnIn.getWidth()-20)+'px';
+		addEventListenerFunction(place[0], $(place[0]).find('.person')[0], oldAnimationName, newAnimationName, "TransitionEnd", function(){
+			self.despawn();
+		});
+		self.setDirection(targetX);
+		self.moveTo(targetX);
+	}
 	
 	this.moveToElevator = function(){
 		var targetPos = config.targetElevator.config.center+((Math.random()*40)-20)+'px';
@@ -76,13 +120,13 @@ function Person(place, config) {
 	
 	var reactToDoorOpenEvent = function(floorOfElevator){
 		if(!insideElevator && config.startingFloor == floorOfElevator){
-		console.log(config.targetFloor);
+		//console.log(config.targetFloor);
 			insideElevator = !insideElevator;
 			self.moveTo((config.targetElevator.config.center-direction*(20+Math.floor(Math.random()*30)))+'px', (self.getY()-(10+Math.floor(Math.random()*10)))+'px');
 			var animatedElement = $(place[0]).find('.person')[0];
 			self.changeCssClassName(animatedElement, "waitForElevator", "walkIntoElevatorAnimation");
 			addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "TransitionEnd", function(){
-				console.log("moveTransition finisher");
+				//console.log("moveTransition finisher");
 				addEventListenerFunction(place[0], animatedElement, "walkIntoElevatorAnimation", "turnInElevatorAnimation", "AnimationEnd", function(){
 					self.changeCssClassName(animatedElement, "turnInElevatorAnimation", "waitInElevator");
 				});
@@ -101,18 +145,13 @@ function Person(place, config) {
 			self.changeCssClassName(place[0], "insideElevator", "outsideElevator");
 			self.changeCssClassName(animatedElement, "waitInElevator", "walkOutElevatorAnimation");
 			addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "TransitionEnd", function(){
-				var targetX = Math.round(Math.random())*(self.config.targetFloor.getWidth()-20)+'px';
 				place[0].className = place[0].className+" moveTransition";
-				self.setDirection(targetX);
-				addEventListenerFunction(place[0], animatedElement, "walkOutElevatorAnimation", "walkAnimation", "TransitionEnd", function(){
-					self.despawn();
-				});
-				self.moveTo(targetX);
-				console.log("stepped out");
+				self.moveToDespawn(self.config.targetFloor, "walkOutElevatorAnimation", "walkAnimation");
+				//console.log("stepped out");
 			});
 			self.moveTo(self.getX()+'px', self.config.targetElevator.getCurrentFloor().getWalkableHeight()+'px');
 			place[0].style.transform= place[0].style.transform.replace(/scaleY(.*)/, "scaleY(1)");
-			console.log("stepping out");
+			//console.log("stepping out");
 			
 		}		
 	};
@@ -125,7 +164,7 @@ function Person(place, config) {
 	}
 	
 	var showPerson = function(elevatorPos){
-		console.log(elevatorPos);
+		//console.log(elevatorPos);
 		place[0].style.top=(elevatorPos+5+Math.random()*10)+'px';
 		place[0].style.visibility="visible";
 	}
@@ -165,6 +204,6 @@ Person.prototype.initialize = function(place, config) {
 }
 
 Person.prototype.despawn = function() {
-	console.log("despawned");
+	//console.log("despawned");
 	this.place[0].parentNode.removeChild(this.place[0]);
 }

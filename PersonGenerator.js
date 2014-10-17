@@ -36,7 +36,9 @@ function PersonGenerator(gameDiv, targetElevator){
 			height: 110, // Height of the person in pixels.
 			targetElevator: this.targetElevator,
 			startingFloor: startFloor,
-			targetFloor: endFloor}
+			targetFloor: endFloor,
+			patience: 1000,
+			patienceRefreshRate: 100}
 			);
 		this.personCount++;
 		

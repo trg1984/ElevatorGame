@@ -27,6 +27,14 @@
 	animation: turn .5s steps(4) alternate 1;
 }
 
+.turnBackAnimation{
+	-webkit-animation: turn .5s steps(4) reverse 1;
+	-moz-animation: turn .5s steps(4) reverse 1;
+	-ms-animation: turn .5s steps(4) reverse 1;
+	-o-animation: turn .5s steps(4) reverse 1;
+	animation: turn .5s steps(4) reverse 1;
+}
+
 .walkIntoElevatorAnimation{
 	-webkit-animation: walkIntoElevator .5s steps(4) infinite;
 	-moz-animation: walkIntoElevator .5s steps(4) infinite;
