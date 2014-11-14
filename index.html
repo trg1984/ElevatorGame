@@ -47,6 +47,9 @@
 								case 'spawn person':
 									personGenerator.getNewPerson();
 									break;
+								case 'run code':
+									var result = valueOf(interpret(editor.getValue()));
+									break;
 								default:
 									break;
 							}
@@ -99,6 +102,8 @@
 		<input type="button" style="top:108px;" class="button" value="toggle doors"/><br/>
 		<input type="button" style="top:144px;" class="button" value="toggle timelapse"/><br/>
 		<input type="button" style="top:180px;" class="button" value="spawn person"/><br/>
+		<input type="button" style="top:216px;" class="button" value="run code"/><br/>
+		
 		<div id="game">
 			<div id="elevator"></div>
 			<div id="floor1"></div>

@@ -43,6 +43,9 @@ CodeEditor.prototype.setKeyControls = function() {
 		);
 }
 
+CodeEditor.prototype.getValue = function() {
+	return this.place.find('.codeArea').val();
+}
 
 CodeEditor.prototype.getCaret = function(el) { 
 	if (el.selectionStart) return el.selectionStart; 

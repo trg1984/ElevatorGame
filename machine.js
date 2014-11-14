@@ -116,6 +116,20 @@ var fn = {
 	set: function(args, vars) {
 		vars[args[0].name] = valueOf(args[1], vars);
 		return vars[args[0].name];
+	},
+	moveUp: function(args, vars) {
+		//console.log('moveUp(): ', args, vars);
+		var change = args.length > 0 ? valueOf(args[0], vars) : 1;
+		elevator.moveUp(change);
+	},
+	moveDown: function(args, vars) {
+		//console.log('moveDown(): ', args, vars);
+		var change = args.length > 0 ? valueOf(args[0], vars) : 1;
+		elevator.moveDown(change);
+	},
+	toggleDoors: function(args, vars) {
+		//console.log('toggleDoors(): ', args, vars);
+		elevator.toggleDoors();
 	}
 };
 
@@ -189,11 +203,23 @@ Cell.prototype.isValid = function() {
 
 function interpret(input) {
 	var items = input.split(new RegExp('(' + listSeparator_regExp + '|' + leftDelimiter_regExp + '|' + delimiters_regExp.join('|') + '|' + rightDelimiter_regExp + ')', 'g')).filter(function(item) {return item !== ''});
-	//console.log('interpret(), input: ', input, items);
+	console.log('interpret(), input: ', input, items);
+	
+	if (items.length === 0) { // For an empty program, return 0.
+		
+		return new Cell(
+			{
+				type: 'real',
+				value: 0
+			}
+		);
+	}
 	
 	// Search for additions and substractions.
 	var delimDepth = 0;
 	var i = items.length - 1;
+	
+	
 	do {
 		var current = items[i].trim(); // Remove surrounding whitespaces.
 		if (current === leftDelimiter) {
@@ -440,7 +466,7 @@ function valueOf(input, vars) {
 	else if (input.type === 'real') return input.value;
 	else if (input.type === 'string') return input.value;
 	else if (input.type === 'var') return vars[input.name];
-	//throw('Unexpected input type.');
+	throw('Unexpected input type.');
 }
 
 function hasValidParenthesis(s, leftParen, rightParen) {
