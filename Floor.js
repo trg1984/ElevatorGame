@@ -1,9 +1,10 @@
 function Floor(place, config) {
 
-	var callButtonChangedEvent = [];
+	this.callButtonChangedEvent = [];
 
 	this.config = {
-		floorIndex: -1, // Name of the floor.
+		name: 'Untitled floor',
+		floorIndex: -1, // Index of the floor.
 		picUrl: 'gfx/floor1.png', // Floor's graphic.
 		height: 180, // Height of the floor in pixels.
 		width: 360, //width in pixels
@@ -13,48 +14,50 @@ function Floor(place, config) {
 	};
 	
 	this.initialize(place, config);
-	
-	this.getWalkableHeight = function(){
-		return this.config.walkableHeight+this.config.currentPos;
-	};
-	
-	this.getWidth = function(){
-		return this.config.width;
-	};
-	
-	this.changeUpButtonState = function(on){
-		if(on){
-			place.find('.floorButtonUp').show();
-			triggerCallButtonEvent(true);
-		}else{
-			place.find('.floorButtonUp').hide();
-		}
-	};
-	
-	this.changeDownButtonState = function(on){
-		if(on){
-			place.find('.floorButtonDown').show();
-			triggerCallButtonEvent(false);
-		}else{
-			place.find('.floorButtonDown').hide();
-		}
-	};
-	
-	this.resetFloorButtons = function(){
-		changeDownButtonState(false);
-		changeUpButtonState(false);
-	};
-	
-	var registerToButtonStateChange = function(callback){
-		callButtonChangedEvent.push(callback);
-	}
-	
-	var triggerCallButtonEvent = function(direction){
-		for(i=0; i<callButtonChangedEvent.length; i++){
-			callButtonChangedEvent[i](this, direction);
-		}
-	};
 }
+
+Floor.prototype.getWalkableHeight = function() {
+	return this.config.walkableHeight + this.config.currentPos;
+};
+
+Floor.prototype.getWidth = function() {
+	return this.config.width;
+};
+
+Floor.prototype.changeUpButtonState = function(on) {
+	console.log('changeUpButtonState():', on, this);
+	if (on){
+		this.place.find('.floorButtonUp').show();
+		this.triggerCallButtonEvent(true);
+	}else{
+		this.place.find('.floorButtonUp').hide();
+	}
+};
+
+Floor.prototype.changeDownButtonState = function(on) {
+	console.log('changeDownButtonState():', on, this);
+	if(on){
+		this.place.find('.floorButtonDown').show();
+		this.triggerCallButtonEvent(false);
+	}else{
+		this.place.find('.floorButtonDown').hide();
+	}
+};
+
+Floor.prototype.resetFloorButtons = function() {
+	this.changeDownButtonState(false);
+	this.changeUpButtonState(false);
+};
+
+Floor.prototype.registerToButtonStateChange = function(callback) {
+	this.callButtonChangedEvent.push(callback);
+}
+
+Floor.prototype.triggerCallButtonEvent = function(direction) {
+	for(i=0; i<this.callButtonChangedEvent.length; i++){
+		this.callButtonChangedEvent[i](this, direction);
+	}
+};
 
 Floor.prototype.initialize = function(place, config) {
 	this.place = place;

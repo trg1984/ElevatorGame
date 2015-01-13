@@ -1,0 +1,30 @@
+{
+	"name": "Level 1: Easy pick-up.",
+	"description": "Pick up a passanger from the first floor to the second floor.",
+	"floors": [
+		{
+			"name": "2",
+			"floorIndex": 0
+		},
+		{
+			"name": "1",
+			"floorIndex": 1
+		}
+	],
+	"initialCode": {
+		"main": ""
+	},
+	"timeLimit": null,
+	"actions": [
+		{
+			"timeStamp": 3000,
+			"action": "spawnPerson",
+			"presets": {
+				"name": "Timmy",
+				"startingFloor": 1,
+				"targetFloor": 0,
+				"patience": 10000
+			}
+		}
+	]
+}

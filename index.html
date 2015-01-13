@@ -1,24 +1,28 @@
 <html>
 	<head>
+		<meta charset="utf8" />
 		<link href="Elevator.css" type="text/css" rel="stylesheet" />
 		<link href="Floor.css" type="text/css" rel="stylesheet" />
 		<link href="Person.css" type="text/css" rel="stylesheet" />
 		<link href="CodeEditor.css" type="text/css" rel="stylesheet" />
-		<script src="jquery-1.11.1.js"></script>
-		<script src="Elevator.js"></script>
-		<script src="Floor.js"></script>
-		<script src="Person.js"></script>
-		<script src="PersonGenerator.js"></script>
-		<script src="CodeEditor.js"></script>
-		<script src="machine.js"></script>
-		<script>
+		<link href="Game.css" type="text/css" rel="stylesheet" />
+		<script src="jquery-1.11.1.js" type="application/javascript"></script>
+		<script src="Elevator.js" type="application/javascript"></script>
+		<script src="Floor.js" type="application/javascript"></script>
+		<script src="Person.js" type="application/javascript"></script>
+		<script src="PersonGenerator.js" type="application/javascript"></script>
+		<script src="CodeEditor.js" type="application/javascript"></script>
+		<script src="Level.js" type="application/javascript"></script>
+		<script src="machine.js" type="application/javascript"></script>
+		<script type="application/javascript">
 			function init() {
-				floor3 = new Floor($('#floor3'), {name: '3', floorIndex: 2});
-				floor2 = new Floor($('#floor2'), {name: '2', floorIndex: 1});
-				floor1 = new Floor($('#floor1'), {name: '1', floorIndex: 0});
-				elevator = new Elevator($('#elevator'), {floors: [floor1, floor2, floor3]});
-				personGenerator = new PersonGenerator($('#game'), elevator);
-				editor = new CodeEditor($('#codeEditor'), { /* defaults */ });
+				level = new Level($('#level'), {});
+				level.loadFromFile(
+					'./levels/level1.json',
+					function() {
+						level.start();
+					}
+				);
 			};
 		
 			$(document).ready(
@@ -33,22 +37,23 @@
 									init();
 									break;
 								case 'move up':
-									elevator.moveUp();
+									level.elevator.moveUp();
 									break;
 								case 'move down':
-									elevator.moveDown();
+									level.elevator.moveDown();
 									break;
 								case 'toggle doors':
-									elevator.toggleDoors();
+									level.elevator.toggleDoors();
 									break;
 								case 'toggle timelapse':
-									elevator.toggleTimeLapse();
+									level.elevator.toggleTimeLapse();
 									break;
 								case 'spawn person':
-									personGenerator.getNewPerson();
+									level.personGenerator.createPerson();
 									break;
 								case 'run code':
-									var result = valueOf(interpret(editor.getValue()));
+								debugger;
+									var result = valueOf(interpret(this.editor.getValue()));
 									break;
 								default:
 									break;
@@ -105,10 +110,12 @@
 		<input type="button" style="top:216px;" class="button" value="run code"/><br/>
 		
 		<div id="game">
-			<div id="elevator"></div>
-			<div id="floor1"></div>
-			<div id="floor2"></div>
-			<div id="floor3"></div>
+			<div id="level">
+				<div id="elevator"></div>
+				<div id="floor1"></div>
+				<div id="floor2"></div>
+				<div id="floor3"></div>
+			</div>
 			<div id="codeEditor"></div>
 		</div>
 	</body>

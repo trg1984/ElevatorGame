@@ -1,0 +1,15 @@
+.timeLapse {
+	-webkit-transition: all 0.1s !important;
+	-moz-transition: all 0.1s !important;
+	-ms-transition: all 0.1s !important;
+	-o-transition: all 0.1s !important;
+    transition: all 0.1s !important;
+}
+
+.level {
+	background-color: black;
+	background-image: url(gfx/floorBackWall.png);
+	position: relative;
+	top: 0;
+	left: 0;
+}

@@ -10,14 +10,6 @@
     transition: top 5s;
 }
 
-.timeLapse {
-	-webkit-transition: all 0.1s !important;
-	-moz-transition: all 0.1s !important;
-	-ms-transition: all 0.1s !important;
-	-o-transition: all 0.1s !important;
-    transition: all 0.1s !important;
-}
-
 .elevator .part {
 	width: 100%;
 	height: 100%;

@@ -174,20 +174,20 @@ function Person(place, config) {
 	}
 	
 	window.setTimeout(this.moveToElevator,100);
+}
 
-	this.getX = function(){
-		var pixelPos = self.place[0].style.left;
-		return parseInt(pixelPos.substring(0,pixelPos.indexOf('p')));
-	}
+Person.prototype.getX = function(){
+	var pixelPos = this.place.css('left');
+	return parseInt(pixelPos.substring(0, pixelPos.indexOf('p')));
+}
 
-	this.getY = function(){
-		var pixelPos = self.place[0].style.top;
-		return parseInt(pixelPos.substr(0,pixelPos.indexOf('p')));
-	}
-	
-	this.changeCssClassName = function(element, oldName, newName){
-		element.className = element.className.replace(oldName,newName);
-	}
+Person.prototype.getY = function(){
+	var pixelPos = this.place.css('top');
+	return parseInt(pixelPos.substr(0, pixelPos.indexOf('p')));
+}
+
+Person.prototype.changeCssClassName = function(element, oldName, newName){
+	element.className = element.className.replace(oldName,newName);
 }
 
 Person.prototype.initialize = function(place, config) {

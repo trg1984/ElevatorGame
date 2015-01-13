@@ -1,10 +1,5 @@
 function Elevator(place, config) {
-
-	var doorsOpenEvent = []; //after doors have opened
-	var doorsCloseEvent = []; //after doors have closed
-	var elevatorStopEvent = []; //when elevator stops
-	var elevatorStartEvent = []; //when elevator starts
-
+	
 	this.config = {
 		floors: [],
 		floorIndex: -1,
@@ -14,90 +9,71 @@ function Elevator(place, config) {
 	};
 	
 	this.initialize(place, config);
-	
-	var self = this;
-	
-	var transitionEndEventName = "transitionend";
-	
-	//transition for elevator, for hiding/showing people
-	this.place[0].addEventListener(transitionEndEventName, function(e){
-		self.fireEvent(elevatorStopEvent, self.config.currentPos);	
-	},false);
-	
-	//transition for doors, so people can walk out
-	this.place.find('.part.leftDoor, .part.rightDoor')[0].addEventListener(transitionEndEventName, function(e){
-		var currentFloor = self.config.floors[self.config.floorIndex];
-		e.stopPropagation();
-		if(self.doorsOpen()){
-			self.fireEvent(doorsOpenEvent, currentFloor);
-		}else{
-			self.fireEvent(doorsCloseEvent, currentFloor);		
-		}
-	},false);
-	
-	this.fireEvent = function(eventArray, parameter){
-		for(i=0; i<eventArray.length; i++){
-			eventArray[i](parameter);
-		}
-	}
-	
-	this.registerToElevatorEvents = function(openCallback, closeCallback){
-		this.registerToElevatorStartEvent(openCallback);
-		this.registerToElevatorStopEvent(closeCallback);
-	}
-	
-	this.registerToElevatorStartEvent = function(callback){
-		this.pushToArray(elevatorStartEvent, callback);
-	}
-	
-	this.unregisterToElevatorStartEvent = function(callback){
-		this.removeFromArray(elevatorStartEvent, callback);
-	}
-	
-	this.registerToElevatorStopEvent = function(callback){
-		this.pushToArray(elevatorStopEvent, callback);
-	}
-	
-	this.registerToDoorEvents = function(openCallback, closeCallback){
-		this.registerToDoorOpenEvent(openCallback);
-		this.registerToDoorCloseEvent(closeCallback);
-	}
-	
-	this.registerToDoorCloseEvent = function(callback){
-		this.pushToArray(doorsCloseEvent, callback);
-	}
-	
-	this.unregisterToDoorCloseEvent = function(callback){
-		this.removeFromArray(doorsCloseEvent, callback);
-	}
+}
 
-	this.registerToDoorOpenEvent = function(callback){
-		this.pushToArray(doorsOpenEvent, callback);
+Elevator.prototype.fireEvent = function(eventArray, parameter){
+	for(i = 0; i < eventArray.length; i++) {
+		eventArray[i](parameter);
 	}
-	
-	this.unregisterToDoorOpenEvent = function(callback){
-		this.removeFromArray(doorsOpenEvent, callback);
-	}
-	
-	this.pushToArray = function(array, element){
-		array.push(element);
-	}
-	
-	this.removeFromArray =function(array, element){
-		for(i=0; i<array.length;i++){
-			if(array[i] == callback){
-				array.splice(i,1);
-				return;
-			}
+}
+
+Elevator.prototype.registerToElevatorEvents = function(openCallback, closeCallback) {
+	this.registerToElevatorStartEvent(openCallback);
+	this.registerToElevatorStopEvent(closeCallback);
+}
+
+Elevator.prototype.registerToElevatorStartEvent = function(callback) {
+	this.pushToArray(this.elevatorStartEvent, callback);
+}
+
+Elevator.prototype.unregisterToElevatorStartEvent = function(callback) {
+	this.removeFromArray(this.elevatorStartEvent, callback);
+}
+
+Elevator.prototype.registerToElevatorStopEvent = function(callback) {
+	this.pushToArray(this.elevatorStopEvent, callback);
+}
+
+Elevator.prototype.registerToDoorEvents = function(openCallback, closeCallback) {
+	this.registerToDoorOpenEvent(openCallback);
+	this.registerToDoorCloseEvent(closeCallback);
+}
+
+Elevator.prototype.registerToDoorCloseEvent = function(callback) {
+	this.pushToArray(this.doorsCloseEvent, callback);
+}
+
+Elevator.prototype.unregisterToDoorCloseEvent = function(callback) {
+	this.removeFromArray(this.doorsCloseEvent, callback);
+}
+
+Elevator.prototype.registerToDoorOpenEvent = function(callback) {
+	this.pushToArray(this.doorsOpenEvent, callback);
+}
+
+Elevator.prototype.unregisterToDoorOpenEvent = function(callback) {
+	this.removeFromArray(this.doorsOpenEvent, callback);
+}
+
+Elevator.prototype.pushToArray = function(array, element) {
+	array.push(element);
+}
+
+Elevator.prototype.removeFromArray = function(array, element) {
+	for (i = 0; i < array.length; ++i){
+		if (array[i] == element) {
+			array.splice(i,1);
+			return;
 		}
 	}
+}
 	
-	this.getCurrentFloor = function(){
-		return self.config.floors[self.config.floorIndex];
-	}
-	
-	this.moveUp = function(n) {
-	self.fireEvent(elevatorStartEvent);
+Elevator.prototype.getCurrentFloor = function(){
+	return this.config.floors[this.config.floorIndex];
+}
+
+Elevator.prototype.moveUp = function(n) {
+	this.fireEvent(this.elevatorStartEvent); // NOTE what does this do with just one parameter?
 	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
 	this.config.floors[this.config.floorIndex].changeUpButtonState(false);
 		if (!this.doorsOpen() && (this.config.floorIndex > 0)) {
@@ -113,8 +89,8 @@ function Elevator(place, config) {
 		console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
 	}
 
-	this.moveDown = function(n) {
-	self.fireEvent(elevatorStartEvent);
+Elevator.prototype.moveDown = function(n) {
+	this.fireEvent(this.elevatorStartEvent); // NOTE what does this do with just one parameter?
 	console.log('before: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
 	this.config.floors[this.config.floorIndex].changeDownButtonState(false);
 	if (!this.doorsOpen() && (this.config.floorIndex < this.config.floors.length - 1)) {
@@ -129,7 +105,6 @@ function Elevator(place, config) {
 	}
 	console.log('after: ', this.config.floorIndex, this.config.floors.length, this.config.currentPos);
 }
-}
 
 Elevator.prototype.insertFloor = function(floor, index) {
 	this.config.floors.splice(index, 0, floor);
@@ -140,7 +115,12 @@ Elevator.prototype.insertFloor = function(floor, index) {
 	}
 }
 
+Elevator.prototype.getFloor = function(n) {
+	return this.config.floors[n];
+}
+
 Elevator.prototype.initialize = function(place, config) {
+	var self = this;
 	this.place = place;
 	this.place
 		.empty()
@@ -151,6 +131,11 @@ Elevator.prototype.initialize = function(place, config) {
 			'<div class="door rightDoor part"></div>' +
 			'<div class="frame part"></div>'
 		);
+	
+	this.doorsOpenEvent = []; //after doors have opened
+	this.doorsCloseEvent = []; //after doors have closed
+	this.elevatorStopEvent = []; //when elevator stops
+	this.elevatorStartEvent = []; //when elevator starts
 	
 	if (typeof(config) === 'object') for (var item in config) this.config[item] = config[item];
 	if (this.config.floors.length > 0) {
@@ -168,6 +153,27 @@ Elevator.prototype.initialize = function(place, config) {
 		
 	}
 	
+	var transitionEndEventName = "transitionend";
+	
+	//transition for elevator, for hiding/showing people
+	this.place[0].addEventListener(transitionEndEventName, function(e){
+		self.fireEvent(self.elevatorStopEvent, self.config.currentPos);	
+	},false);
+	
+	//transition for doors, so people can walk out
+	this.place.find('.part.leftDoor, .part.rightDoor')[0].addEventListener(
+		transitionEndEventName,
+		function(e) {
+			var currentFloor = self.config.floors[self.config.floorIndex];
+			e.stopPropagation();
+			if(self.doorsOpen()){
+				self.fireEvent(self.doorsOpenEvent, currentFloor);
+			}else{
+				self.fireEvent(self.doorsCloseEvent, currentFloor);		
+			}
+		},
+		false
+	);
 }
 
 Elevator.prototype.toggleTimeLapse = function() {
@@ -178,7 +184,7 @@ Elevator.prototype.toggleTimeLapse = function() {
 
 Elevator.prototype.toggleDoors = function() {
 	// TODO only open doors if elevator is not moving.
-//	if(!this.doorsOpen())
+	//	if(!this.doorsOpen())
 		
 	this.place.find('.part.leftDoor, .part.rightDoor').toggleClass('open');
 }

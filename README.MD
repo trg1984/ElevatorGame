@@ -35,13 +35,18 @@ TODO
 	- [ ] Floor doors open and close.
 - [ ] Interactable elevator action events.
 - [ ] A rudimentary ElevatorIDE.
-    - [ ] Code editor.
-    - [ ] Console.
-    - [ ] Elevator API + docs.
-- [ ] People handler (Draw passangers from a given random distribution).
+	- [x] Code editor.
+	- [ ] Console.
+	- [ ] Elevator API + docs.
+	- [ ] A note system to interact with the user.
+
+- [x] People handler (Draw passangers from a given random distribution).
 - [ ] Proper elevator music.
 - [ ] Sound effects.
 - [ ] Levels.
+	- [x] Support for loadable levels.
+	- [x] First level file. One person between two floors.
+	- [ ] Goal accomplishment checker.
 - [ ] Menus & options
 
 Licence

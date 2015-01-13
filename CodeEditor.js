@@ -95,6 +95,5 @@ CodeEditor.prototype.draw = function() {
 			'<div class="inspector"></div>' +
 			'<div class="eventView"></div>'
 		);
-	
 	this.setKeyControls();
 }
