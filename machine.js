@@ -120,16 +120,16 @@ var fn = {
 	moveUp: function(args, vars) {
 		//console.log('moveUp(): ', args, vars);
 		var change = args.length > 0 ? valueOf(args[0], vars) : 1;
-		elevator.moveUp(change);
+		level.elevator.moveUp(change);
 	},
 	moveDown: function(args, vars) {
 		//console.log('moveDown(): ', args, vars);
 		var change = args.length > 0 ? valueOf(args[0], vars) : 1;
-		elevator.moveDown(change);
+		level.elevator.moveDown(change);
 	},
 	toggleDoors: function(args, vars) {
 		//console.log('toggleDoors(): ', args, vars);
-		elevator.toggleDoors();
+		level.elevator.toggleDoors();
 	}
 };
 
